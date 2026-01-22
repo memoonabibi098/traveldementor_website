@@ -1,0 +1,43 @@
+.main-panel>.container {
+    min-height: calc(100% - 123px);
+    margin-top: 69px;
+    overflow: hidden;
+    width: 100%;
+    max-width: unset;
+    padding: 0 !important
+}
+
+.header-link {
+    background: #f0eff8;
+}
+
+.links-color {
+    color: var(--nav-color);
+}
+
+.bg-color {
+    background-color: var(--accent-color);
+}
+
+.edit-del-icon {
+    background-color: var(--nav-color);
+}
+
+.height {
+    height: 15%;
+}
+
+
+
+.input-style {
+    height: 2.2rem;
+    background: none;
+    border-radius: .5rem;
+    border: 1px solid var(--bs-body-color);
+}
+
+.btn-style {
+    width: 1rem;
+    height: 1rem;
+    padding: 0 0 1.5rem 0;
+}

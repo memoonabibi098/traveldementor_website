@@ -1,0 +1,18 @@
+.header-link {
+    background: #f0eff8;
+}
+
+.links-color {
+    color: var(--nav-color);
+}
+
+.bg-color {
+    background-color: var(--accent-color);
+}
+
+.edit-del-icon {
+    background-color: var(--nav-color);
+}
+.height{
+    height: 15%;
+}

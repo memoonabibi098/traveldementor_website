@@ -1,0 +1,272 @@
+@charset "UTF-8";
+
+/* Fonts */
+:root {
+  --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --heading-font: "Raleway", sans-serif;
+  --nav-font: "Montserrat", sans-serif;
+
+/* Global Colors - The following color variables are used throughout the website. Updating them here will change the color scheme of the entire website */
+  --background-color: white;
+  --heading-color: #2f345b;
+  --default-color: #4d4a4a;
+  --accent-color: #c59c3d;
+  --secondary-color: #f2cd74;
+  --transparent-color: #2f345b0c;
+  --bg-transparent-color: #c59c3d1c;
+  --border-top-colors: #2f345b34;
+  /* secondary-color transparent shard */
+
+  /* Similar to --nav-hover-color, this color is applied to dropdown navigation links when they are hovered over. */
+  --style-font: "Montez", cursive;
+  --title-font: "Manrope", sans-serif;
+}
+
+
+/* Color Presets - These classes override global colors when applied to any section or element, providing reuse of the sam color scheme. */
+
+.light-background {
+  --background-color: #f2cc741c;
+  --surface-color: #ffffffc4;
+  --hover-color: white;
+}
+/* .dark-background {
+  --background-color: #081b12;
+  --default-color: #ffffff;
+  --heading-color: #ffffff;
+  --surface-color: #1f3028;
+  --contrast-color: #ffffff;
+} */
+
+/*--------------------------------------------------------------
+# General Styling & Shared Classes
+--------------------------------------------------------------*/
+a {
+  color: var(--accent-color);
+  font-family: var(--default-font);
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+a:hover {
+  color: color-mix(in srgb, var(--accent-color), transparent 25%);
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--heading-color);
+  font-family: var(--heading-font);
+}
+p {
+  color: var(--default-color);
+  font-family: var(--default-font);
+}
+
+/*--------------------------------------------------------------
+# Preloader
+--------------------------------------------------------------*/
+/* Preloader styling */
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  /* background-image: url(../Pictures/loder-backgound-1.png);
+    background-size: cover; */
+  z-index: 99999;
+  opacity: 1;
+  transition: opacity 0.1s ease-in-out;
+}
+
+/* Loader styling */
+.loader {
+  width: 400px;
+  /* Adjust based on your logo size */
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Adjust based on your logo size */
+  overflow: hidden;
+  z-index: 9999;
+}
+
+/* Animation to reveal the image */
+@keyframes slideImage {
+  to {
+    clip-path: inset(0 -100% 0 0);
+    /* Reveals the image by animating the clip-path */
+  }
+}
+
+/* Loader image styling */
+.loader-img {
+  width: 100%;
+  height: auto;
+  clip-path: inset(0 100% 0 0);
+  /* Initially hides the image */
+  animation: slideImage 2s steps(20) infinite;
+  /* Adjust number of steps based on logo width */
+  z-index: 9999;
+}
+
+@media (max-width: 767px) {
+
+  /* Tablet (landscape) / Small laptop */
+  .loader-img {
+    width: 60%;
+  }
+}
+
+
+/* Hide scrollbar for all browsers */
+html::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera */
+}
+
+#scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 8px;
+  /* Thickness */
+  height: 0%;
+  /* Now height will change, not width */
+  background-color: #c59c3d;
+  /* Your main color */
+  z-index: 9989;
+  transition: height 1s ease-out;
+}
+
+/*--------------------------------------------------------------
+# Scroll Top Button & Whatsapp
+--------------------------------------------------------------*/
+
+.scroll-div {
+  height: 2.5rem;
+  width: 2.5rem;
+  display: block;
+  position: fixed;
+  bottom: 4rem;
+  right: 2rem;
+  z-index: 9999;
+}
+
+.scroll-to-top {
+  height: 2.5rem;
+  width: 2.5rem;
+  background: #c59c3d;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.scroll-to-top:hover {
+  opacity: 1;
+}
+
+.scroll-to-top img {
+  width: 80%;
+}
+
+
+.whatsapp-icon-main-div {
+  position: fixed;
+  bottom: 1rem;
+  right: 2rem;
+  z-index: 9999;
+}
+
+.whatsapp-icon-div a img {
+  width: 2.5rem;
+  height: 2.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover Animation */
+.whatsapp-icon-div a img:hover {
+  transform: scale(1.15) rotate(10deg);
+  box-shadow: 0 8px 20px rgba(0, 255, 0, 0.5);
+}
+
+/* Click (Active) Animation */
+.whatsapp-icon-div a img:active {
+  transform: scale(0.95);
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.whatsapp-icon-div a img {
+  animation: pulse 2s infinite ease-in-out;
+}
+
+
+@media (max-width: 1199px) {
+
+  /* Tablet (landscape) / Small laptop */
+  .scroll-div {
+    right: 1rem;
+  }
+
+  .whatsapp-icon-main-div {
+    right: 1rem;
+  }
+
+
+}
+
+@media(max-width: 767px) {
+
+  /* Tablet (landscape) / Small laptop  */
+  .scroll-div {
+    height: 2rem;
+    width: 2rem;
+    bottom: 3.5rem;
+    right: 1rem;
+  }
+
+  .scroll-to-top {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .whatsapp-icon-main-div {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .whatsapp-icon-div a img {
+    width: 2rem;
+    height: 2rem;
+  }
+}

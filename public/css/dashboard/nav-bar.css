@@ -1,0 +1,42 @@
+.main-header {
+   background: #fff;
+   width: calc(100% - 250px);
+   position: fixed;
+   z-index: 1001
+}
+
+.main-header .navbar-header {
+   min-height: 70px
+}
+
+.main-header .navbar-header .btn-toggle {
+   margin-right: 30px;
+   margin-left: 20px
+}
+
+#search-nav {
+   flex: 1;
+   max-width: 300px;
+   transition: all .4s
+}
+
+#search-nav.focus {
+   max-width: 400px
+}
+
+.main-panel {
+   position: relative;
+   width: calc(100% - 265px);
+   float: right;
+   transition: all .3s
+}
+
+.page-navs {
+   position: relative;
+   display: block;
+   padding-right: 1rem;
+   padding-left: 1rem;
+   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .07);
+   z-index: 1
+}
+
