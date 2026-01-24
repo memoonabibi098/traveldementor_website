@@ -49,14 +49,22 @@ class HeaderController extends Controller
             $file = $request->file('logo');
             $fileName = time() . '_' . $file->getClientOriginalName();
 
-            // Delete old logo if exists
-            $oldHeader = Header::first();
-            if ($oldHeader && $oldHeader->logo && File::exists(public_path('uploads/' . $oldHeader->logo))) {
-                File::delete(public_path('uploads/' . $oldHeader->logo));
+            // Define upload path outside public
+            $uploadPath = base_path('uploads/header');
+
+            // Make sure the folder exists
+            if (!File::exists($uploadPath)) {
+                File::makeDirectory($uploadPath, 0755, true);
             }
 
-            // Move file to public/uploads
-            $file->move(public_path('uploads'), $fileName);
+            // Delete old logo if exists
+            $oldHeader = Header::first();
+            if ($oldHeader && $oldHeader->logo && File::exists($uploadPath . '/' . $oldHeader->logo)) {
+                File::delete($uploadPath . '/' . $oldHeader->logo);
+            }
+
+            // Move file to the base_path folder
+            $file->move($uploadPath, $fileName);
 
             $data['logo'] = $fileName; // just store filename in DB
         }
@@ -70,6 +78,7 @@ class HeaderController extends Controller
         return redirect()->route('admin.header')
             ->with('success', 'Header saved successfully');
     }
+
 
 
     /**
@@ -96,13 +105,17 @@ class HeaderController extends Controller
             $file = $request->file('logo');
             $fileName = time() . '_' . $file->getClientOriginalName();
 
-            if ($header->logo && File::exists(public_path('uploads/' . $header->logo))) {
-                File::delete(public_path('uploads/' . $header->logo));
+            // Delete old logo
+            if ($header->logo && File::exists(public_path('uploads/header/' . $header->logo))) {
+                File::delete(public_path('uploads/header/' . $header->logo));
             }
 
-            $file->move(public_path('uploads'), $fileName);
+            // Move new file
+            $file->move(public_path('uploads/header'), $fileName);
+
             $data['logo'] = $fileName;
         }
+
 
         if (isset($data['menus'])) {
             $data['menus'] = json_encode($data['menus']);

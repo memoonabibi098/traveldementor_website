@@ -1,17 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\FooterController;
 use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\HeroSectionController;
 
 
 
 // ..........................................................Website Portion........................................................
-Route::get('/', function () {
-    return view('website.home');
-})->name('homepage');
+// Route::get('/', function () {
+//     return view('website.home');
+// })->name('homepage');
 
-
+Route::get('/', [HomeController::class, 'index'])->name('homepage');
 
 
 
@@ -42,6 +45,16 @@ Route::middleware('admin.auth')->group(function () {
     Route::post('/dashboard/header/store', [HeaderController::class, 'store'])->name('header.store');
     Route::put('/header/update/{id}', [HeaderController::class, 'update'])->name('header.update');
     Route::delete('/header/destroy/{id}', [HeaderController::class, 'destroy'])->name('header.destroy');
+    Route::get('/footer', [FooterController::class, 'index'])->name('admin.footer');
+    Route::post('/footer', [FooterController::class, 'store'])->name('footer.store');
+    Route::put('/footer/{id}', [FooterController::class, 'update'])->name('footer.update');
+    Route::delete('/footer/{id}', [FooterController::class, 'destroy'])->name('footer.destroy');
+    Route::get('/hero', [HeroSectionController::class, 'index'])->name('admin.hero');
+    Route::post('/hero', [HeroSectionController::class, 'store'])->name('hero.store');
+    // Return JSON for a hero
+    Route::get('/hero/{hero}/edit-json', [HeroSectionController::class, 'editJson'])->name('hero.edit');
+    Route::put('hero/{hero}', [HeroSectionController::class, 'update'])->name('hero.update');
+    Route::delete('hero/{hero}', [HeroSectionController::class, 'destroy'])->name('hero.destroy');
 
 
     Route::get('admin/logout', [AdminUserController::class, 'logout'])

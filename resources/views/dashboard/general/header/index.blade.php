@@ -4,6 +4,17 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard/header.css') }}"> --}}
 @endpush
 @section('content')
+
+    @php
+        $menus = [];
+
+        if ($header && $header->menus) {
+            $menus = is_array($header->menus)
+                ? $header->menus
+                : json_decode($header->menus, true);
+        }
+    @endphp
+
     <div class="col-12 d-flex justify-content-between align-items-center">
         <h3 class="fw-bold mb-3">Header</h3>
         <div class="col-2 d-flex justify-content-end align-items-center">
@@ -25,53 +36,7 @@
             </li>
         </ol>
     </div>
-    {{-- <div class="header-layout d-flex col-12 px-2 py-3 rounded my-4 header-link justify-content-around">
-        <div class="col-2 d-flex justify-content-center align-items-center">
-            <div class="logo-div">
-                <img src="{{ asset('images/website_images/home/dark-logo.webp') }}" class="w-100" alt="">
-            </div>
-        </div>
-        <div class="col-7">
-            <div class="menu-div d-flex justify-content-center align-items-center h-100">
-                <ul class="d-flex mb-0 align-items-center justify-content-evenly h-100 w-100 fs-5">
-                    <li>
-                        <a href="" class="links-color">Home</a>
-                    </li>
-                    <li>
-                        <a href="" class="links-color">About us</a>
-                    </li>
-                    <li>
-                        <a href="" class="links-color">Services</a>
-                    </li>
-                    <li>
-                        <a href="" class="links-color">Visa Status</a>
-                    </li>
-                    <li>
-                        <a href="" class="links-color">Contact us</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-2 d-flex justify-content-center align-items-center">
-            <div class="d-flex justify-content-center align-items-center">
-                <div class="bg-color px-3 py-2 rounded">
-                    <a href="" class=" text-white">Login / Signup</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-1 d-flex justify-content-center align-items-center">
-            <div class="d-flex justify-content-around align-items-center w-100">
-                <div class="edit-del-icon px-3 py-2  me-2 rounded">
-                    <a href="" class="">
-                        <i class="fa fa-pencil-square-o fs-5 text-white" aria-hidden="true"></i></a>
-                </div>
-                <div class="bg-danger px-3 py-2 rounded">
-                    <a href="" class="">
-                        <i class="fa fa-trash-o fs-5 text-white" aria-hidden="true"></i></a>
-                </div>
-            </div>
-        </div>
-    </div> --}}
+
 
 
     <div class="header-layout d-flex col-12 px-2 py-3 rounded my-4 header-link justify-content-around">
@@ -79,7 +44,7 @@
         {{-- Logo --}}
         <div class="col-2 d-flex justify-content-center align-items-center">
             <div class="logo-div">
-                <img src="{{ $header && $header->logo ? asset('uploads/' . $header->logo) : asset('images/website_images/home/dark-logo.webp') }}"
+                <img src="{{ $header && $header->logo ? asset('uploads/header/' . $header->logo) : asset('images/website_images/home/dark-logo.webp') }}"
                     class="w-100" alt="">
             </div>
         </div>
@@ -88,10 +53,12 @@
         <div class="col-7">
             <div class="menu-div d-flex justify-content-center align-items-center h-100">
                 <ul class="d-flex mb-0 align-items-center justify-content-evenly h-100 w-100 fs-5">
-                    @if($header && $header->menus)
+                    @if($header && is_array($header->menus))
                         @foreach($header->menus as $menu)
                             <li>
-                                <a href="{{ $menu['url'] ?? '#' }}" class="links-color">{{ $menu['title'] ?? '' }}</a>
+                                <a href="{{ $menu['url'] ?? '#' }}">
+                                    {{ $menu['title'] ?? '' }}
+                                </a>
                             </li>
                         @endforeach
                     @else
@@ -248,7 +215,6 @@
         </div>
     </div>
 
-    {{-- edit modal --}}
     {{-- Edit Modal --}}
     <div class="modal fade" id="editHeaderModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -271,7 +237,7 @@
                             <h6 class="fw-bold mb-3">Logo</h6>
                             <input type="file" name="logo" class="form-control">
                             <img id="editHeaderLogoPreview"
-                                src="{{ $header && $header->logo ? asset('uploads/' . $header->logo) : '' }}" class="mt-2"
+                                src="{{ $header && $header->logo ? asset('uploads/header/' . $header->logo) : '' }}" class="mt-2"
                                 width="150" style="{{ $header && $header->logo ? '' : 'display:none;' }}">
                         </div>
 
@@ -285,17 +251,19 @@
                             </div>
 
                             <div id="editMenuContainer">
-                                @if($header && $header->menus)
-                                    @foreach($header->menus as $index => $menu)
+                                @if(is_array($menus) && count($menus))
+                                    @foreach($menus as $index => $menu)
                                         <div class="row align-items-center mb-2 menu-row">
                                             <div class="col-md-5">
                                                 <input type="text" name="menus[{{ $index }}][title]" class="form-control"
-                                                    value="{{ $menu['title'] }}">
+                                                    value="{{ $menu['title'] ?? '' }}">
                                             </div>
+
                                             <div class="col-md-5">
                                                 <input type="text" name="menus[{{ $index }}][url]" class="form-control"
-                                                    value="{{ $menu['url'] }}">
+                                                    value="{{ $menu['url'] ?? '' }}">
                                             </div>
+
                                             <div class="col-md-2 text-end">
                                                 <button type="button" class="btn btn-danger btn-sm removeMenu">
                                                     <i class="fa fa-trash"></i>
@@ -305,6 +273,7 @@
                                     @endforeach
                                 @endif
                             </div>
+
                         </div>
 
                         {{-- Button Text & URL --}}

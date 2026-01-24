@@ -115,6 +115,7 @@ Turkey Visit Visa Consultant Pakistan" />
     <link rel="stylesheet" href="{{ asset('vendor/swiper/swiper-bundle.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/website/main.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/website/header.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/website/footer.css') }}" />
 
 </head>
 <!-- Google tag (gtag.js) -->
@@ -190,6 +191,8 @@ Turkey Visit Visa Consultant Pakistan" />
 <body class="index-page">
     @include('website.layouts.top-scroll-loader')
     @include('website.layouts.header')
+    @include('website.layouts.footer')
+
 
     <!-- Scroll Top -->
     <a href="#" id="scroll-top" class="scroll-top d-none align-items-center justify-content-center"><i

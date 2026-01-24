@@ -51,12 +51,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{ route('admin.footer') }}">
                                     <span class="sub-item">Footer</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{ route('admin.hero') }}">
                                     <span class="sub-item">Hero</span>
                                 </a>
                             </li>
