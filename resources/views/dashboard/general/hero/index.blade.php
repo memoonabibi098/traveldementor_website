@@ -36,8 +36,7 @@
                 {{-- Edit / Delete Icons for the whole hero section --}}
                 <div class="position-absolute top-50 end-0 d-flex gap-1">
                     {{-- Edit --}}
-                    <a href="{{ route('hero.edit', $hero->id) }}" class="text-white bg-primary px-2 py-1 rounded edit-hero-btn"
-                        data-bs-toggle="modal" data-bs-target="#editModal">
+                    <a href="{{ route('hero.edit', $hero->id) }}" class="text-white bg-primary px-2 py-1 rounded edit-hero-btn">
                         <i class="fa fa-pencil"></i>
                     </a>
 
@@ -70,17 +69,27 @@
 
                         @if($repeater->type === 'counters' || $repeater->type === 'experience_badges')
                             <div class="col-12 mt-4 d-flex">
+                                @php
+                                        $value = '';
+                                        $label = '';
+                                        $suffix = '';
+                                @endphp
+
                                 @foreach($fields as $field)
                                     @if($field->field_key === 'value')
                                         @php $value = $field->field_value; @endphp
                                     @elseif($field->field_key === 'label')
                                         @php $label = $field->field_value; @endphp
+                                    @elseif($field->field_key === 'suffix')
+                                        @php $suffix = $field->field_value; @endphp
                                     @endif
                                 @endforeach
+
                                 <div class="col-4">
-                                    <h4>{{ $value ?? '' }}</h4>
-                                    <p>{{ $label ?? '' }}</p>
+                                    <h4>{{ $value }}{{ $suffix }}</h4>
+                                    <p>{{ $label }}</p>
                                 </div>
+
                             </div>
                         @endif
                     @endforeach
@@ -152,6 +161,12 @@
                                 <option value="visa_status">Visa Status</option>
                                 <option value="faqs">FAQs</option>
                                 <option value="contact">Contact Us</option>
+                                <option value="bookconsultation">Book Consultation</option>
+                                <option value="passportcollection">Passport Collection</option>
+                                <option value="visaformfilling">Visa Form Filling</option>
+                                <option value="docprecheck">Document Pre-check</option>
+                                <option value="mockinterview">Mock Interview Preparation</option>
+                                <option value="meetgreet">Meet & Greet</option>
                             </select>
                         </div>
 
@@ -169,7 +184,7 @@
             </div>
         </div>
     </div>
-    {{-- edit modal --}}
+
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">

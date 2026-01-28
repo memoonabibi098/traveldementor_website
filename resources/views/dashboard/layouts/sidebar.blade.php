@@ -4,16 +4,16 @@
         <!-- Logo Header -->
         <div class="logo-header">
             <a href="{{ route('admin.dashboard') }}" class="logo">
-                <img src="{{ asset('images/website_images/home/dark-logo.webp') }}" alt="navbar brand" class="navbar-brand"
-                    height="35" />
+                <img src="{{ asset('images/website_images/home/dark-logo.webp') }}" alt="navbar brand"
+                    class="navbar-brand" height="35" />
             </a>
             {{-- <div class="nav-toggle">
-              <button class="btn btn-toggle toggle-sidebar">
-                <i class="gg-menu-right"></i>
-              </button>
-              <button class="btn btn-toggle sidenav-toggler">
-                <i class="gg-menu-left"></i>
-              </button>
+                <button class="btn btn-toggle toggle-sidebar">
+                    <i class="gg-menu-right"></i>
+                </button>
+                <button class="btn btn-toggle sidenav-toggler">
+                    <i class="gg-menu-left"></i>
+                </button>
             </div> --}}
             <button class="topbar-toggler more">
                 <i class="gg-more-vertical-alt"></i>
@@ -235,6 +235,23 @@
                             <li>
                                 <a href="">
                                     <span class="sub-item">Contact Info</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#additional">
+                        <i class="fa fa-question-circle-o"></i>
+                        <p>Additional Record</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="additional">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="{{ route('countries.index') }}">
+                                    <span class="sub-item">Country</span>
                                 </a>
                             </li>
                         </ul>

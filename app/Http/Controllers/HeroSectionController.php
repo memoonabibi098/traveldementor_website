@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\HeroSection;
 use App\Models\HeroRepeater;
 use App\Models\HeroRepeaterField;
+use App\Models\HeroSection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -55,10 +55,14 @@ class HeroSectionController extends Controller
 
             // Dynamic repeaters
             foreach ($request->all() as $type => $rows) {
-                if (!is_array($rows)) continue;
+                if (! is_array($rows)) {
+                    continue;
+                }
 
                 foreach ($rows as $index => $fields) {
-                    if (!is_array($fields)) continue;
+                    if (! is_array($fields)) {
+                        continue;
+                    }
 
                     $repeater = HeroRepeater::create([
                         'hero_section_id' => $hero->id,
@@ -94,6 +98,7 @@ class HeroSectionController extends Controller
     {
         $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
         $file->move(public_path("uploads/hero/$folder"), $filename);
+
         return "uploads/hero/$folder/$filename";
     }
 
@@ -105,8 +110,8 @@ class HeroSectionController extends Controller
             'tag' => $hero->tag,
             'title' => $hero->title,
             'description' => $hero->description,
-            'primary_image' => $hero->primary_image,
-            'secondary_image' => $hero->secondary_image,
+            'primary_image' => $hero->primary_image ? asset($hero->primary_image) : null,
+            'secondary_image' => $hero->secondary_image ? asset($hero->secondary_image) : null,
         ];
 
         // Add repeaters dynamically
@@ -118,13 +123,27 @@ class HeroSectionController extends Controller
             $response[$repeater->type][] = $repeaterData;
         }
 
+        // Convert picture paths in repeaters to full URLs
+        foreach ($response as $key => $value) {
+            if (is_array($value)) {
+                $response[$key] = array_map(function ($item) {
+                    if (isset($item['picture']) && $item['picture']) {
+                        $item['picture'] = asset($item['picture']); // use public path
+                    }
+
+                    return $item;
+                }, $value);
+            }
+        }
+
         return response()->json($response);
     }
-
 
     public function update(Request $request, HeroSection $hero)
     {
         DB::transaction(function () use ($request, $hero) {
+
+            // Update basic fields
             $hero->update([
                 'tag' => $request->tag,
                 'title' => $request->title,
@@ -132,12 +151,13 @@ class HeroSectionController extends Controller
                 'status' => true,
             ]);
 
+            // Handle main images
             if ($request->hasFile('primary_image')) {
-                $hero->primary_image = $request->file('primary_image')->store('hero', 'public');
+                $hero->primary_image = $this->uploadImage($request->file('primary_image'), $request->page_key);
             }
 
             if ($request->hasFile('secondary_image')) {
-                $hero->secondary_image = $request->file('secondary_image')->store('hero', 'public');
+                $hero->secondary_image = $this->uploadImage($request->file('secondary_image'), $request->page_key);
             }
 
             $hero->save();
@@ -145,32 +165,42 @@ class HeroSectionController extends Controller
             // Remove old repeaters
             $hero->repeaters()->delete();
 
-            // Handle new repeaters
-            foreach ($request->all() as $key => $value) {
-                if (!is_array($value)) continue;
+            // Handle repeater images and fields
+            foreach ($request->all() as $type => $rows) {
+                if (!is_array($rows)) continue;
 
-                $repeater = HeroRepeater::create([
-                    'hero_section_id' => $hero->id,
-                    'type' => $key,
-                    'sort_order' => 0
-                ]);
+                foreach ($rows as $index => $fields) {
+                    if (!is_array($fields)) continue;
 
-                foreach ($value as $fieldKey => $fieldValue) {
-                    if ($request->hasFile("$key.$fieldKey")) {
-                        $fieldValue = $request->file("$key.$fieldKey")->store("hero/$key", 'public');
-                    }
-
-                    HeroRepeaterField::create([
-                        'hero_repeater_id' => $repeater->id,
-                        'field_key' => $fieldKey,
-                        'field_value' => $fieldValue,
+                    $repeater = HeroRepeater::create([
+                        'hero_section_id' => $hero->id,
+                        'type' => $type,
+                        'sort_order' => $index,
                     ]);
+
+                    foreach ($fields as $fieldKey => $fieldValue) {
+
+                        // Handle repeater file uploads using public path
+                        if ($request->hasFile("$type.$index.$fieldKey")) {
+                            $fieldValue = $this->uploadImage(
+                                $request->file("$type.$index.$fieldKey"),
+                                $request->page_key . '/' . $type
+                            );
+                        }
+
+                        HeroRepeaterField::create([
+                            'hero_repeater_id' => $repeater->id,
+                            'field_key' => $fieldKey,
+                            'field_value' => $fieldValue,
+                        ]);
+                    }
                 }
             }
         });
 
         return redirect()->back()->with('success', 'Hero section updated successfully.');
     }
+
 
     public function destroy(HeroSection $hero)
     {

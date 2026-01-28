@@ -4,17 +4,18 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FooterController;
 use App\Http\Controllers\HeaderController;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\HeroSectionController;
 
 
 
 // ..........................................................Website Portion........................................................
-// Route::get('/', function () {
-//     return view('website.home');
-// })->name('homepage');
 
-Route::get('/', [HomeController::class, 'index'])->name('homepage');
+
+Route::get('/', [HomeController::class, 'indexHome'])->name('homepage');
+Route::get('/aboutus', [HomeController::class, 'indexAbout'])->name('aboutpage');
+
 
 
 
@@ -55,7 +56,8 @@ Route::middleware('admin.auth')->group(function () {
     Route::get('/hero/{hero}/edit-json', [HeroSectionController::class, 'editJson'])->name('hero.edit');
     Route::put('hero/{hero}', [HeroSectionController::class, 'update'])->name('hero.update');
     Route::delete('hero/{hero}', [HeroSectionController::class, 'destroy'])->name('hero.destroy');
-
+    // countries
+    Route::resource('countries', CountryController::class);
 
     Route::get('admin/logout', [AdminUserController::class, 'logout'])
         ->name('admin.logout');

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('font-awesome/font-awesome-4.7.0/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/bootstrap-icons/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="{{ asset('css/dashboard/main.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/dashboard/sidebar.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dashboard/nav-bar.css') }}">
@@ -44,7 +45,9 @@
 <script src="{{ asset('vendor/chart-circle/circles.min.js') }}"></script>
 
 <!-- Datatables -->
-<script src="{{ asset('vendor/datatables/datatables.min.js') }}"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
 
 <!-- jQuery Vector Maps -->
 <script src="{{ asset('vendor/jsvectormap/jsvectormap.min.js') }}"></script>

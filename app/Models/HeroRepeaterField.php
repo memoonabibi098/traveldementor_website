@@ -11,6 +11,7 @@ class HeroRepeaterField extends Model
         'hero_repeater_id',
         'field_key',
         'field_value',
+        'suffix',
     ];
 
     public function repeater(): BelongsTo

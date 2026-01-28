@@ -1280,9 +1280,21 @@ namespace App\Models {
     /**
      * App\Models\HeroRepeater
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property mixed $sort_order
+     * @property string $type
+     * @property mixed $hero_section_id
+     * @property int $id
      * @property-read \App\Models\HeroSection $heroSection
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HeroRepeaterField> $fields
      * @property-read int|null $fields_count
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeater>|HeroRepeater whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeater>|HeroRepeater whereHeroSectionId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeater>|HeroRepeater whereType($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeater>|HeroRepeater whereSortOrder($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeater>|HeroRepeater whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeater>|HeroRepeater whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeater>|HeroRepeater newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeater>|HeroRepeater newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeater>|HeroRepeater query()
@@ -1578,7 +1590,21 @@ namespace App\Models {
     /**
      * App\Models\HeroRepeaterField
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property string|null $suffix
+     * @property string|null $field_value
+     * @property string $field_key
+     * @property mixed $hero_repeater_id
+     * @property int $id
      * @property-read \App\Models\HeroRepeater $repeater
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeaterField>|HeroRepeaterField whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeaterField>|HeroRepeaterField whereHeroRepeaterId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeaterField>|HeroRepeaterField whereFieldKey($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeaterField>|HeroRepeaterField whereFieldValue($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeaterField>|HeroRepeaterField whereSuffix($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeaterField>|HeroRepeaterField whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeaterField>|HeroRepeaterField whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeaterField>|HeroRepeaterField newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeaterField>|HeroRepeaterField newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<HeroRepeaterField>|HeroRepeaterField query()
@@ -1874,8 +1900,34 @@ namespace App\Models {
     /**
      * App\Models\HeroSection
      *
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property bool $status
+     * @property string|null $secondary_image
+     * @property string|null $primary_image
+     * @property string|null $description
+     * @property string|null $title
+     * @property string|null $tag
+     * @property string $page_key
+     * @property int $id
+     * @property-read mixed $counters
+     * @property-read mixed $client_review
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HeroRepeater> $repeaters
      * @property-read int|null $repeaters_count
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HeroRepeater> $counters
+     * @property-read int|null $counters_count
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\HeroRepeater> $experienceBadges
+     * @property-read int|null $experienceBadges_count
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroSection>|HeroSection whereId($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroSection>|HeroSection wherePageKey($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroSection>|HeroSection whereTag($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroSection>|HeroSection whereTitle($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroSection>|HeroSection whereDescription($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroSection>|HeroSection wherePrimaryImage($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroSection>|HeroSection whereSecondaryImage($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroSection>|HeroSection whereStatus($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroSection>|HeroSection whereCreatedAt($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<HeroSection>|HeroSection whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<HeroSection>|HeroSection newModelQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<HeroSection>|HeroSection newQuery()
      * @method static \Illuminate\Database\Eloquent\Builder<HeroSection>|HeroSection query()
