@@ -22,6 +22,7 @@
 
 <body>
     <div class="wrapper">
+        
         @include('dashboard.layouts.nav-bar')
         @include('dashboard.layouts.sidebar')
         <div class="main-panel">

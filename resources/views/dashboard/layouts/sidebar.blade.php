@@ -72,17 +72,17 @@
                     <div class="collapse" id="sidebarLayouts">
                         <ul class="nav nav-collapse">
                             <li>
-                                <a href="">
+                                <a href="{{ route('admin.choose-us.index') }}">
                                     <span class="sub-item">Choose us</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{ route('admin.popular-destination-section.index') }}">
                                     <span class="sub-item">Popular Destination</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{ route('admin.visa-options.index') }}">
                                     <span class="sub-item">Visa Options</span>
                                 </a>
                             </li>

@@ -116,6 +116,8 @@ Turkey Visit Visa Consultant Pakistan" />
     <link rel="stylesheet" href="{{ asset('css/website/main.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/website/header.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/website/home-hero-section.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/website/choose-us.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/website/popular-destination.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/website/footer.css') }}" />
 
 </head>
@@ -193,6 +195,8 @@ Turkey Visit Visa Consultant Pakistan" />
     @include('website.layouts.top-scroll-loader')
     @include('website.layouts.header')
     @include('website.layouts.home-hero-section')
+    @include('website.layouts.choose-us')
+    @include('website.layouts.popular-country')
     @include('website.layouts.footer')
 
 

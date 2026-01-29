@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard/header.css') }}"> --}}
 @endpush
 @section('content')
+    {{-- {{ dd($header ?? 'HEADER NOT FOUND') }} --}}
 
     @php
         $menus = [];
@@ -53,7 +54,7 @@
         <div class="col-7">
             <div class="menu-div d-flex justify-content-center align-items-center h-100">
                 <ul class="d-flex mb-0 align-items-center justify-content-evenly h-100 w-100 fs-5">
-                    @if($header && is_array($header->menus))
+                    @if($header && $header->menus)
                         @foreach($header->menus as $menu)
                             <li>
                                 <a href="{{ $menu['url'] ?? '#' }}">
@@ -62,13 +63,11 @@
                             </li>
                         @endforeach
                     @else
-                        {{-- Fallback static menus --}}
-                        <li><a href="" class="links-color">Home</a></li>
-                        <li><a href="" class="links-color">About us</a></li>
-                        <li><a href="" class="links-color">Services</a></li>
-                        <li><a href="" class="links-color">Visa Status</a></li>
-                        <li><a href="" class="links-color">Contact us</a></li>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About us</a></li>
+                        <li><a href="#">Services</a></li>
                     @endif
+
 
                 </ul>
             </div>
@@ -237,8 +236,8 @@
                             <h6 class="fw-bold mb-3">Logo</h6>
                             <input type="file" name="logo" class="form-control">
                             <img id="editHeaderLogoPreview"
-                                src="{{ $header && $header->logo ? asset('uploads/header/' . $header->logo) : '' }}" class="mt-2"
-                                width="150" style="{{ $header && $header->logo ? '' : 'display:none;' }}">
+                                src="{{ $header && $header->logo ? asset('uploads/header/' . $header->logo) : '' }}"
+                                class="mt-2" width="150" style="{{ $header && $header->logo ? '' : 'display:none;' }}">
                         </div>
 
                         {{-- Menus --}}

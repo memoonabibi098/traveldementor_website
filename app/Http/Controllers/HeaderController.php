@@ -98,33 +98,32 @@ class HeaderController extends Controller
             'status' => 'required|boolean',
         ]);
 
-        $data = $request->only(['menus', 'button_text', 'button_url', 'status']);
+        $data = $request->only([
+            'menus',
+            'button_text',
+            'button_url',
+            'status'
+        ]);
 
-        /** Handle logo */
+        // Handle logo
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
             $fileName = time() . '_' . $file->getClientOriginalName();
 
-            // Delete old logo
             if ($header->logo && File::exists(public_path('uploads/header/' . $header->logo))) {
                 File::delete(public_path('uploads/header/' . $header->logo));
             }
 
-            // Move new file
             $file->move(public_path('uploads/header'), $fileName);
-
             $data['logo'] = $fileName;
         }
 
-
-        if (isset($data['menus'])) {
-            $data['menus'] = json_encode($data['menus']);
-        }
-
+        // ❌ NO json_encode here
         $header->update($data);
 
         return redirect()->back()->with('success', 'Header updated successfully.');
     }
+
 
     /**
      * Delete header

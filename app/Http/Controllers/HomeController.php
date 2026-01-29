@@ -7,6 +7,8 @@ use App\Models\Header;
 use App\Models\Country;
 use App\Models\HeroSection;
 use Illuminate\Http\Request;
+use App\Models\ChooseUsSection;
+use App\Models\PopularDestinationSection;
 
 class HomeController extends Controller
 {
@@ -15,21 +17,50 @@ class HomeController extends Controller
     {
         // Fetch active header
         $header = Header::where('status', 1)->first();
-        $menus = $header && $header->menus ? json_decode($header->menus, true) : [];
+        $menus = $header->menus ?? [];
 
         // Fetch active footer
         $footer = Footer::where('status', 1)->first();
-        $companyLinks = $footer ? $footer->company_links ?? [] : []; // No json_decode needed
-        // countries
+        $companyLinks = $footer ? $footer->company_links ?? [] : [];
+
+        // Countries
         $countries = Country::orderBy('name', 'asc')->get();
-        // hero sections
+
+        // Hero sections
         $heroSection = HeroSection::with(['repeaters.fields'])
             ->where('status', 1)
             ->where('page_key', 'home')
             ->first();
 
+        // **Choose Us sections with points**
+        $chooseUsSections = ChooseUsSection::with('points')
+            ->where('status', 1)
+            ->where('page_key', 'home') // optional if you have multiple pages
+            ->get();
 
-        return view('website.home', compact('header', 'menus', 'footer', 'companyLinks', 'countries', 'heroSection'));
+        // Optional: get main heading/description from the first section
+        $chooseUsMain = $chooseUsSections->first();
+
+
+        // Fetch active popular destinations with items
+        $popularDestinationsSections = PopularDestinationSection::with(['items' => function ($q) {
+            $q->where('status', 1)->orderBy('order', 'asc');
+        }])
+            ->where('status', 1)
+            ->orderBy('order', 'asc')
+            ->get();
+
+        return view('website.home', compact(
+            'header',
+            'menus',
+            'footer',
+            'companyLinks',
+            'countries',
+            'heroSection',
+            'chooseUsSections',
+            'chooseUsMain',
+            'popularDestinationsSections'
+        ));
     }
 
 
@@ -37,7 +68,7 @@ class HomeController extends Controller
     {
         // Fetch active header
         $header = Header::where('status', 1)->first();
-        $menus = $header && $header->menus ? json_decode($header->menus, true) : [];
+        $menus = $header->menus ?? [];
 
         // Fetch active footer
         $footer = Footer::where('status', 1)->first();
@@ -50,5 +81,81 @@ class HomeController extends Controller
 
 
         return view('website.about-us', compact('header', 'menus', 'footer', 'companyLinks', 'heroSection'));
+    }
+
+    public function indexService()
+    {
+        // Fetch active header
+        $header = Header::where('status', 1)->first();
+        $menus = $header->menus ?? [];
+
+        // Fetch active footer
+        $footer = Footer::where('status', 1)->first();
+        $companyLinks = $footer ? $footer->company_links ?? [] : []; // No json_decode needed
+        // hero sections
+        $heroSection = HeroSection::with(['repeaters.fields'])
+            ->where('status', 1)
+            ->where('page_key', 'services')
+            ->first();
+
+
+        return view('website.services', compact('header', 'menus', 'footer', 'companyLinks', 'heroSection'));
+    }
+
+    public function indexTracking()
+    {
+        // Fetch active header
+        $header = Header::where('status', 1)->first();
+        $menus = $header->menus ?? [];
+
+        // Fetch active footer
+        $footer = Footer::where('status', 1)->first();
+        $companyLinks = $footer ? $footer->company_links ?? [] : []; // No json_decode needed
+        // hero sections
+        $heroSection = HeroSection::with(['repeaters.fields'])
+            ->where('status', 1)
+            ->where('page_key', 'visa_status')
+            ->first();
+
+
+        return view('website.visastatus', compact('header', 'menus', 'footer', 'companyLinks', 'heroSection'));
+    }
+
+    public function indexFaq()
+    {
+        // Fetch active header
+        $header = Header::where('status', 1)->first();
+        $menus = $header->menus ?? [];
+
+        // Fetch active footer
+        $footer = Footer::where('status', 1)->first();
+        $companyLinks = $footer ? $footer->company_links ?? [] : []; // No json_decode needed
+        // hero sections
+        $heroSection = HeroSection::with(['repeaters.fields'])
+            ->where('status', 1)
+            ->where('page_key', 'faqs')
+            ->first();
+
+
+        return view('website.faqs', compact('header', 'menus', 'footer', 'companyLinks', 'heroSection'));
+    }
+
+    public function indexContact()
+    {
+        // Fetch active header
+        $header = Header::where('status', 1)->first();
+        $menus = $header->menus ?? [];
+
+        // Fetch active footer
+        $footer = Footer::where('status', 1)->first();
+        $companyLinks = $footer ? $footer->company_links ?? [] : []; // No json_decode needed
+        // hero sections
+        $heroSection = HeroSection::with(['repeaters.fields'])
+            ->where('status', 1)
+            ->where('page_key', 'contact')
+            ->first();
+
+
+        return view('website.contact-us', compact('header', 'menus', 'footer', 'companyLinks', 'heroSection'));
     }
 }

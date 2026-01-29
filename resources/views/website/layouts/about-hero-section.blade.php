@@ -5,17 +5,19 @@
       <ol>
         <li><a href="{{ route('homepage') }}">Home</a></li>
 
-        @if(isset($heroSection) && $heroSection->page_key === 'about')
-          <li class="current">About</li>
-        @elseif(isset($heroSection) && $heroSection->page_key === 'home')
-          <li class="current">Home</li>
+        @if(isset($heroSection) && $heroSection->page_key !== 'home')
+          <li class="current">
+            {{ ucfirst(str_replace('_', ' ', $heroSection->page_key)) }}
+          </li>
         @elseif(isset($pageTitle))
           <li class="current">{{ $pageTitle }}</li>
         @endif
+
       </ol>
     </div>
   </nav>
 </div>
+
 
 
 <section id="about" class="about section">
@@ -50,22 +52,22 @@
 
             {{-- Experience badge --}}
             @if($heroSection->experienceBadges->count())
-              <div class="experience-badges">
-                <div class="row">
+              <div class="experience-badge">
+                {{-- <div class="row"> --}}
                   @foreach($heroSection->experienceBadges as $badge)
                     @php
                       $value = $badge->fields->firstWhere('field_key', 'value')?->field_value;
-                      $suffix = $badge->fields->firstWhere('field_key', 'suffix')?->field_value;
-                      $text = $badge->fields->firstWhere('field_key', 'text')?->field_value;
+                      $label = $badge->fields->firstWhere('field_key', 'label')?->field_value;
                     @endphp
-                    <div class="col-4">
-                      <div class="badge-item">
-                        <div class="badge-number">{{ $value }}{{ $suffix }}</div>
-                        <div class="badge-text">{{ $text }}</div>
-                      </div>
-                    </div>
+                    {{-- <div class="col-4"> --}}
+                      {{-- <div class="badge-item"> --}}
+                        <div class="badge-number">{{ $value }}</div>
+                        <div class="badge-text">{{ $label }}</div>
+                        {{--
+                      </div> --}}
+                      {{-- </div> --}}
                   @endforeach
-                </div>
+                  {{-- </div> --}}
               </div>
             @endif
 
