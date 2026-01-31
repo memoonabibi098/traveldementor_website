@@ -92,12 +92,12 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{ route('admin.visa-holder.index') }}">
                                     <span class="sub-item">Visa Holder</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{ route('admin.our-achievements.section.index') }}">
                                     <span class="sub-item">Our Achievements</span>
                                 </a>
                             </li>

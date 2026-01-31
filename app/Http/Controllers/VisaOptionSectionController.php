@@ -42,4 +42,24 @@ class VisaOptionSectionController extends Controller
 
         return redirect()->back()->with('success', 'Visa Option Section created successfully.');
     }
+
+    public function update(Request $request, $id)
+    {
+        $section = VisaOptionSection::findOrFail($id);
+
+        $section->update($request->validate([
+            'heading' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'required|in:0,1',
+            'order' => 'nullable|integer',
+        ]));
+
+        return back()->with('success', 'Section updated');
+    }
+
+    public function destroy($id)
+    {
+        VisaOptionSection::findOrFail($id)->delete();
+        return back()->with('success', 'Section deleted');
+    }
 }

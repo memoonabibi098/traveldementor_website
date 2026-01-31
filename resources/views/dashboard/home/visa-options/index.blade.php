@@ -31,78 +31,75 @@
             </li>
         </ol>
     </div>
-    <div class="col-12">
-        <div class="col-12 d-flex flex-column align-items-center">
-            <h4 class="mt-4">Visa Options Tailored for You</h4>
-        </div>
-        <div class="col-12 d-flex mt-3">
-            <div class="col-3 pe-5">
-                <img src="{{ asset('images/website_images/home/business-visa-dark-golden.webp') }}" alt="">
-                <h4 class="fw-bold mt-3">Business Visa</h4>
-                <p>Whether to attend a Business Meeting or to participate in an International Exhibition, We ensure you meet
-                    all requirements.</p>
-                <div class="col-12 d-flex">
-                    <div class="col-6">
-                        <h4>1250+</h4>
-                        <p>Apply</p>
-                    </div>
-                    <div class="col-6">
-                        <h4>93%</h4>
-                        <p>Approved</p>
-                    </div>
-                </div>
+
+
+
+    @foreach($sections as $section)
+        <div class="col-12 mt-4">
+            <div class="col-12 d-flex flex-column align-items-center">
+                <h4 class="mt-4">{{ $section->heading }}</h4>
+
+                <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#editSectionModal{{ $section->id }}">
+                    <i class="fa fa-edit"></i>
+                </a>
+
+                <form action="{{ route('visa-options.section.destroy', $section->id) }}" method="POST"
+                    onsubmit="return confirm('Delete this section?')">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn p-0 text-danger">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </form>
+
+                @if($section->description)
+                    <p class="text-muted text-center col-8">
+                        {{ $section->description }}
+                    </p>
+                @endif
+
+
             </div>
-            <div class="col-3 pe-5">
-                <img src="{{ asset('images/website_images/home/Tourist-visa-dark-golden.webp') }}" alt="">
-                <h4 class="fw-bold mt-3">Tourist Visa</h4>
-                <p>Ready to explore new Destinations? Let us handle the paper work and logistics of securing your tourist
-                    visa so you can focus on creating unforgettable travel memories.</p>
-                <div class="col-12 d-flex">
-                    <div class="col-6">
-                        <h4>1450+</h4>
-                        <p>Apply</p>
+
+            <div class="col-12 d-flex mt-3 flex-wrap">
+                @foreach($section->items->where('status', 1) as $item)
+                    <div class="col-3 pe-5 mb-4">
+                        <img src="{{ asset($item->image) }}" alt="{{ $item->title }}" class="img-fluid">
+
+                        <h4 class="fw-bold mt-3">{{ $item->title }}</h4>
+
+                        <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#editItemModal{{ $item->id }}">
+                            <i class="fa fa-edit"></i>
+                        </a>
+
+                        <form action="{{ route('visa-options.item.destroy', $item->id) }}" method="POST"
+                            onsubmit="return confirm('Delete this item?')">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn p-0 text-danger">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </form>
+
+                        <p>{{ $item->description }}</p>
+
+                        @if($item->counters->count())
+                            <div class="col-12 d-flex">
+                                @foreach($item->counters as $counter)
+                                    <div class="col-6">
+                                        <h4>
+                                            {{ $counter->value }}{{ $counter->suffix }}
+                                        </h4>
+                                        <p>{{ $counter->label }}</p>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
-                    <div class="col-6">
-                        <h4>97%</h4>
-                        <p>Approved</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3 pe-5">
-                <img src="{{ asset('images/website_images/home/family-friend-visa-dark-golden.webp') }}" alt="">
-                <h4 class="fw-bold mt-3">Family/Friend Visa</h4>
-                <p>Reuniting with family members is Priceless. We will assist You in obtaining the necessary visa for your
-                    family or friend’s visit, making the journey to see your loved ones stress-free.</p>
-                <div class="col-12 d-flex">
-                    <div class="col-6">
-                        <h4>1300+</h4>
-                        <p>Apply</p>
-                    </div>
-                    <div class="col-6">
-                        <h4>90%</h4>
-                        <p>Approved</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3 pe-5">
-                <img src="{{ asset('images/website_images/home/e-visa-dark-golden.webp') }}" alt="">
-                <h4 class="fw-bold mt-3">E-Visa</h4>
-                <p>An E-visa is a digital visa that lets you apply online, saving time and effort. Countries like Thailand,
-                    Malaysia and Baku E-visas for Pakistani, making travel simple and convenient!
-                </p>
-                <div class="col-12 d-flex">
-                    <div class="col-6">
-                        <h4>1800+</h4>
-                        <p>Apply</p>
-                    </div>
-                    <div class="col-6">
-                        <h4>98%</h4>
-                        <p>Approved</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
-    </div>
+    @endforeach
 
 
     <div class="modal fade" id="createSectionModal" tabindex="-1" aria-hidden="true">
@@ -238,7 +235,159 @@
     </div>
 
 
+    @foreach($sections as $section)
+        <div class="modal fade" id="editSectionModal{{ $section->id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <form method="POST" action="{{ route('visa-options.section.update', $section->id) }}">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5>Edit Section</h5>
+                            <button class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label>Heading</label>
+                                <input type="text" name="heading" class="form-control" value="{{ $section->heading }}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Description</label>
+                                <textarea name="description" class="form-control">{{ $section->description }}</textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Status</label>
+                                <select name="status" class="form-select">
+                                    <option value="1" @selected($section->status == 1)>Active</option>
+                                    <option value="0" @selected($section->status == 0)>Inactive</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Order</label>
+                                <input type="number" name="order" value="{{ $section->order }}" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button class="btn btn-success">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    @endforeach
+
+
+    @foreach($sections as $section)
+        @foreach($section->items as $item)
+            <div class="modal fade" id="editItemModal{{ $item->id }}" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <form method="POST" action="{{ route('visa-options.item.update', $item->id) }}" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5>Edit Visa Option</h5>
+                                <button class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label>Title</label>
+                                    <input type="text" name="title" value="{{ $item->title }}" class="form-control" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label>Description</label>
+                                    <textarea name="description" class="form-control">{{ $item->description }}</textarea>
+                                </div>
+
+                                @if($item->image)
+                                    <div class="mb-3">
+                                        <label class="form-label">Current Image</label><br>
+                                        <img src="{{ asset($item->image) }}" alt="Current Image"
+                                            style="width: 120px; height: auto; border-radius: 6px; border: 1px solid #ddd;">
+                                    </div>
+                                @endif
+
+                                <div class="mb-3">
+                                    <label>Replace Image</label>
+                                    <input type="file" name="image" class="form-control">
+                                </div>
+                                <hr>
+                                <h6 class="fw-bold">Counters</h6>
+
+                                <div class="counter-wrapper-edit">
+                                    @foreach($item->counters as $index => $counter)
+                                        <div class="row counter-row mb-2">
+                                            <input type="hidden" name="counters[{{ $index }}][id]" value="{{ $counter->id }}">
+
+                                            <div class="col-md-3">
+                                                <input type="number" name="counters[{{ $index }}][value]" class="form-control"
+                                                    value="{{ $counter->value }}" required>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <input type="text" name="counters[{{ $index }}][suffix]" class="form-control"
+                                                    value="{{ $counter->suffix }}">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <input type="text" name="counters[{{ $index }}][label]" class="form-control"
+                                                    value="{{ $counter->label }}">
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <input type="number" name="counters[{{ $index }}][order]" class="form-control"
+                                                    value="{{ $counter->order }}">
+                                            </div>
+
+                                            <div class="col-md-1">
+                                                <button type="button" class="btn btn-danger remove-counter">×</button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+
+                                <button type="button" class="btn btn-sm btn-primary mt-2 add-counter-edit"
+                                    data-item="{{ $item->id }}">
+                                    + Add Counter
+                                </button>
+
+                                <div class="mb-3">
+                                    <label>Status</label>
+                                    <select name="status" class="form-select">
+                                        <option value="1" @selected($item->status == 1)>Active</option>
+                                        <option value="0" @selected($item->status == 0)>Inactive</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label>Order</label>
+                                    <input type="number" name="order" value="{{ $item->order }}" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button class="btn btn-success">Update</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        @endforeach
+    @endforeach
+
+
 @endsection
 @push('scripts')
-    <script src="{{ asset('js/dashboard/popular-destination.js') }}"></script>
+    <script src="{{ asset('js/dashboard/visa-option.js') }}"></script>
 @endpush

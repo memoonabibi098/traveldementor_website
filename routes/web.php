@@ -8,9 +8,13 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\ChooseUsController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\HeroSectionController;
+use App\Http\Controllers\VisaHolderItemController;
 use App\Http\Controllers\VisaOptionItemController;
+use App\Http\Controllers\AchievementsItemController;
+use App\Http\Controllers\VisaHolderSectionController;
 use App\Http\Controllers\VisaOptionSectionController;
 use App\Http\Controllers\PopularDestinationController;
+use App\Http\Controllers\AchievementsSectionController;
 use App\Http\Controllers\PopularDestinationItemController;
 use App\Http\Controllers\PopularDestinationSectionController;
 
@@ -80,10 +84,27 @@ Route::middleware('admin.auth')->group(function () {
     Route::delete('popular-destination-section/{id}', [PopularDestinationSectionController::class, 'destroy'])->name('popular-destination-section.destroy');
     Route::put('popular-destination-item/{id}', [PopularDestinationItemController::class, 'update'])->name('popular-destination-item.update');
     Route::delete('popular-destination-item/{id}', [PopularDestinationItemController::class, 'destroy'])->name('popular-destination-item.destroy');
-    Route::get('/dashboard/visa-options',[VisaOptionSectionController::class, 'index'])->name('admin.visa-options.index');
-    Route::post('/dashboard/visa-options/section/store',[VisaOptionSectionController::class, 'store'])->name('visa-options.section.store');
-    Route::post(  '/dashboard/visa-options/item/store', [VisaOptionItemController::class, 'store'])->name('visa-options.item.store');
-
+    Route::get('/visa-options', [VisaOptionSectionController::class, 'index'])->name('admin.visa-options.index');
+    Route::post('/visa-options/section/store', [VisaOptionSectionController::class, 'store'])->name('visa-options.section.store');
+    Route::post('/visa-options/item/store', [VisaOptionItemController::class, 'store'])->name('visa-options.item.store');
+    Route::put('visa-options/section/{id}', [VisaOptionSectionController::class, 'update'])->name('visa-options.section.update');
+    Route::delete('visa-options/section/{id}', [VisaOptionSectionController::class, 'destroy'])->name('visa-options.section.destroy');
+    Route::put('visa-options/item/{id}', [VisaOptionItemController::class, 'update'])->name('visa-options.item.update');
+    Route::delete('visa-options/item/{id}', [VisaOptionItemController::class, 'destroy'])->name('visa-options.item.destroy');
+    Route::get('/visa-holder', [VisaHolderSectionController::class, 'index'])->name('admin.visa-holder.index');
+    Route::post('/visa-holder/section/store', [VisaHolderSectionController::class, 'store'])->name('visa-holder-section.store');
+    Route::put('/visa-holder/section/update/{id}', [VisaHolderSectionController::class, 'update'])->name('visa-holder-section.update');
+    Route::delete('/visa-holder/section/destroy/{id}', [VisaHolderSectionController::class, 'destroy'])->name('visa-holder-section.destroy');
+    Route::post('/visa-holder/item/store', [VisaHolderItemController::class, 'store'])->name('visa-holder-item.store');
+    Route::put('/visa-holder/item/update/{id}', [VisaHolderItemController::class, 'update'])->name('visa-holder-item.update');
+    Route::delete('/visa-holder/item/destroy/{id}', [VisaHolderItemController::class, 'destroy'])->name('visa-holder-item.destroy');
+    Route::get('/our-achievements', [AchievementsSectionController::class, 'index'])->name('admin.our-achievements.section.index');
+    Route::post('/our-achievements/section/store', [AchievementsSectionController::class, 'store'])->name('our-achievements.section.store');
+    Route::put('/our-achievements/section/update/{id}', [AchievementsSectionController::class, 'update'])->name('our-achievements.section.update');
+    Route::delete('/our-achievements/section/destroy/{id}', [AchievementsSectionController::class, 'destroy'])->name('our-achievements.section.destroy');
+    Route::post('/our-achievements/item/store', [AchievementsItemController::class, 'store'])->name('our-achievements.item.store');
+    Route::put('/our-achievements/item/update/{id}', [AchievementsItemController::class, 'update'])->name('our-achievements.item.update');
+    Route::delete('/our-achievements/item/destroy/{id}', [AchievementsItemController::class, 'destroy'])->name('our-achievements.item.destroy');
     // countries
     Route::resource('countries', CountryController::class);
 
@@ -111,4 +132,3 @@ Route::get('admin/login', function () {
 
 
 Route::post('admin/login', [AdminUserController::class, 'login'])->name('admin.login.submit');
-

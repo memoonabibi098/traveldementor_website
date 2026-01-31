@@ -8,6 +8,8 @@ use App\Models\Country;
 use App\Models\HeroSection;
 use Illuminate\Http\Request;
 use App\Models\ChooseUsSection;
+use App\Models\VisaHolderSection;
+use App\Models\VisaOptionSection;
 use App\Models\PopularDestinationSection;
 
 class HomeController extends Controller
@@ -50,6 +52,51 @@ class HomeController extends Controller
             ->orderBy('order', 'asc')
             ->get();
 
+        // Visa Options (Home Page)
+        $visaOptionSections = VisaOptionSection::with([
+            'items' => function ($q) {
+                $q->where('status', 1)
+                    ->orderBy('order', 'asc')
+                    ->with(['counters' => function ($c) {
+                        $c->orderBy('order', 'asc');
+                    }]);
+            }
+        ])
+            ->where('status', 1)
+            ->where('page_key', 'home')
+            ->orderBy('order', 'asc')
+            ->get();
+        // Visa Options for Home (Flatten for design)
+        $visaOptions = collect();
+
+        $visaOptionMainHeading = null;
+
+        if ($visaOptionSections->isNotEmpty()) {
+            $visaOptionMainHeading = $visaOptionSections->first()->heading;
+
+            foreach ($visaOptionSections->first()->items as $item) {
+                $applyCounter = $item->counters->firstWhere('label', 'Apply');
+                $approvedCounter = $item->counters->firstWhere('label', 'Approved');
+
+                $visaOptions->push((object) [
+                    'icon' => asset($item->image),
+                    'title' => $item->title,
+                    'description' => $item->description,
+                    'apply_count' => $applyCounter?->value ?? 0,
+                    'approved_percentage' => $approvedCounter?->value ?? 0,
+                ]);
+            }
+        }
+
+        // Fetch active Visa Holder Sections with their active items
+        $visaHolderSections = VisaHolderSection::with(['items' => function ($q) {
+            $q->where('status', 1)->orderBy('order', 'asc');
+        }])
+            ->where('status', 1)
+            ->orderBy('order', 'asc')
+            ->get();
+
+
         return view('website.home', compact(
             'header',
             'menus',
@@ -59,7 +106,11 @@ class HomeController extends Controller
             'heroSection',
             'chooseUsSections',
             'chooseUsMain',
-            'popularDestinationsSections'
+            'popularDestinationsSections',
+            'visaOptionSections',
+            'visaOptionMainHeading',
+            'visaOptions',
+            'visaHolderSections'
         ));
     }
 
